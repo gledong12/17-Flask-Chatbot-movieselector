@@ -28,7 +28,7 @@ class CGVTime():
         print('cgvs_code', cgvs_code)
         now =datetime.datetime.now().strftime('%Y%m%d')
         print(now)
-        url = f'http://www.cgv.co.kr/common/showtimes/iframeTheater.aspx?areacode=01&theatercode={cgvs_code}&date=20210406'
+        url = f'http://www.cgv.co.kr/common/showtimes/iframeTheater.aspx?areacode=01&theatercode={cgvs_code}&date={now}'
         print(url)
         data = requests.get(url)
         html = data.text
@@ -51,13 +51,15 @@ class CGVTime():
             for timetable in timetables:
                 print(timetable)
                 time = timetable.select_one('a > em').get_text()
+                print('time2', time)
                 seat = timetable.select_one('a>span').get_text()
+                print('seats', seat)
                 if '마감' in time and '잔여좌석' not in seat:
                     continue
                 else:
-                    print(time)
+                    print('time',time)
                     seat = time + ',  ' + str(seat)
-                    print(seat)
+                    print('seat', seat)
                 movie_time_list.append(seat)
         return movie_time_list
 

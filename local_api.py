@@ -18,8 +18,7 @@ movie_list_key = {
     }
 
 google_credential={
-        "GOOGLE_API_KEY" : config.GOOGLE_API_KEY
-        }
+    "GOOGLE_API_KEY" : config.GOOGLE_API_KEY
+}
 
 app = create_app(database, facebook_credentials, google_credential)
-

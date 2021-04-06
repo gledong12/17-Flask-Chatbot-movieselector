@@ -49,6 +49,8 @@ class FacebookMessage:
         if state == 'SELECT':
             if self.theater_dao.get_cgv_list(message):
                 next_state = 'TIME'
+            elif '순위' in message:
+                next_state = 'RANK'
             else:
                 next_state = 'BAD REQUEST'
             return next_state
@@ -139,7 +141,7 @@ class FacebookMessage:
             cgvs = location.get_location()
             cgv_list = location.simplify(cgvs)
             if cgv_list:
-                cgv_message = ','.join(['{}\n'.format(cgv['name'] ) for cgv in cgv_list])
+                cgv_message = ''.join(['{}\n'.format(cgv['name'] ) for cgv in cgv_list])
                 context = {
                 'text':'지금 주변에 있는 CGV 영화관 목록입니다. \n\n{} 입니다.\
                 \n\n 영화 TOP10을 보고 싶으면  "영화순위"  를 CGV 영화시간표를 보고싶으면 원하시는 영화관 이름을 적어주시면 됩니다.'.format(cgv_message),
@@ -181,8 +183,8 @@ class FacebookMessage:
                 today_movies = cgv.get_movies(message)
                 today_movie_time = cgv.get_timtable(today_movies)
                 print('today_movie_time',today_movie_time)
-                movie_time = ''.join(['{}{}\n'.format(time[0], time[1:])for time in today_movie_time])
-                print(movie_time)
+                movie_time = ','.join(['{}{}\n'.format(time[0], time[1:])for time in today_movie_time])
+                print('=============', movie_time)
 
                 context = {
                     'text' : f'오늘 {message}의 영화시간은\n\n{movie_time}\n입니다.\n 영화관 선택으로 돌아가고 싶으면 "영화관" 을 입력해 주세요',

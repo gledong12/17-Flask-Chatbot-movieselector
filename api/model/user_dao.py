@@ -4,16 +4,28 @@ class UserDao:
     def __init__(self, db):
         self.db = db
 
-    def get_or_create_sender_id(self, sender_id):
-        sender = self.db.execute(text("""
+    def get_user(self, sender_id):
+        return self.db.execute(text("""
             SELECT
                 id,
                 sender_id
             FROM users
-            where sender_id = sender_id
-        """), {'sender_id' : sender_id}).fetchone()
+            WHERE sender_id = sender_id
+            """),{'sender_id' : sender_id}).fetchone()
+    
+    def create_user(self, sender_id):
+        return self.db.execute(text("""
+            INSERT INTO users (
+                sender_id
+            ) VALUES (
+                :sender_id
+            )
+            """), {'sender_id' : sender_id}).lastrowid
 
-        if not sender:
-            sender = self.db.execute("INSERT INTO users (sender_id) VALUES(%s)", sender_id).lastrowid
+    def get_or_create_sender_id(self, sender_id):
+        user = self.get_user(sender_id)
 
-        return sender
+        if not user:
+            return self.create_user(sender_id)
+        
+        return user.id

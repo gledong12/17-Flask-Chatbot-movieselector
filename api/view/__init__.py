@@ -1,3 +1,5 @@
+import logging
+
 from flask       import request, Flask, jsonify, make_response
 from flask.helpers import make_response
 from pymessenger import Bot
@@ -6,31 +8,26 @@ from ..service  import user_service
 
 def create_endpoints(app, services, facebook_credentials, google_credential):
     
-    #@app.route("/ping", methods=['GET'])
-    #def ping():
-    #    return "pong"
-    
     bot = Bot(facebook_credentials['FACEBOOK_PAGE_ACCESS_TOKEN'])
-
-    @app.route("/", methods=['POST', 'GET'])
-    def facebook_message():
-        if request.method == 'GET':
-            if request.args.get('hub.verify_token') == facebook_credentials['VERIFY_TOKEN']:
-                return request.args.get('hub.challenge')
-            return "INVALED_TOKEN", 400
+    
+    @app.route('/', methods=['GET'])
+    def validate_facebook_message():
+        if not request.args.get('hub.verify_token') == facebook_credentials['VERIFY_TOKEN']:
+            raise Exception("INVALED_TOKEN")
+        return request.args.get('hub.challenge')
         
-        elif request.method == 'POST':
+
+    @app.route("/", methods=['POST'])
+    def facebook_message():  
+        if request.method == 'POST':
             payload = request.json
             sender_id = payload['entry'][0]['messaging'][0]['sender']['id']
             message = payload['entry'][0]['messaging'][0]['message']['text']
             
-            # db에 sender_id 저장
             services.user_service.get_or_create_sender_id(sender_id)
-            # 현재상태 
-            state = services.facebook_service.get_current_state(sender_id)
-            print('state', state)
-            # 다음 상태
-            next_state = services.facebook_service.next_state(sender_id, message, state)
+            
+            current_state = services.facebook_service.get_current_state(sender_id)
+            next_state    = services.facebook_service.next_state(sender_id, message, current_state)
             print('next_state', next_state)
             
             message_id = services.facebook_service.save_message(sender_id, message, state, next_state)
