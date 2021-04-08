@@ -22,13 +22,21 @@ class CGVTime():
     def __init__(self, theater_dao):
         self.theater_dao = theater_dao
     
+    def get_cgv_code(self, message):
+        cgv = self.theater_dao.get_cgv_code
+
+        for i in cgv:
+            if message == i[1]:
+                return i[2]
+
+    
     def get_movies(self, message):
         print('message4', message)
-        cgvs_code = self.theater_dao.get_cgv_code(message)
+        cgvs_code = self.get_cgv_code(message)[1]
         print('cgvs_code', cgvs_code)
         now =datetime.datetime.now().strftime('%Y%m%d')
         print(now)
-        url = f'http://www.cgv.co.kr/common/showtimes/iframeTheater.aspx?areacode=01&theatercode={cgvs_code}&date={now}'
+        url = f'http://www.cgv.co.kr/common/showtimes/iframeTheater.aspx?areacode=01&theatercode={cgvs_code}&date=20210412'
         print(url)
         data = requests.get(url)
         html = data.text
@@ -49,24 +57,31 @@ class CGVTime():
             timetables = movie.select('div > div.type-hall > div.info-timetable > ul > li')
             movie_time=[]
             for timetable in timetables:
-                print(timetable)
+                time=[]
                 time = timetable.select_one('a > em').get_text()
                 print('time2', time)
                 seat = timetable.select_one('a>span').get_text()
                 print('seats', seat)
-                if '마감' in time and '잔여좌석' not in seat:
-                    continue
+                if '마감' not in time and '잔여좌석' in seat:
+                    time, seat
                 else:
-                    print('time',time)
-                    seat = time + ',  ' + str(seat)
-                    print('seat', seat)
+                    time.append(time)
+                    time.append(seat)
+                seat = time + ',  ' + str(seat)
+                print(seat)
                 movie_time_list.append(seat)
+            print(movie_time_list)
         return movie_time_list
 
     def get_cgv_code(self, message):
+        print('message7', message)
         now = datetime.datetime.now().strftime('%Y%m%d')
-        cgv_code = self.theater_dao.get_cgv_code(message)
-        tuple = (now, cgv_code)
-        return tuple
+        cgvs = self.theater_dao.get_cgv_code(message)
+        for cgv in cgvs:
+            if message in cgv[1]:
+                cgv = cgv[2]
+                print('cgv_code', cgv)
+                tuple = (now, cgv)
+                return tuple
 
 

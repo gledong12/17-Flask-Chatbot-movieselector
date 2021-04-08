@@ -15,7 +15,7 @@ facebook_credentials = {
 movie_list_key = {
     "KOFIC_API_URL" : config.KOFIC_DAILY_URL,
     "KOFIC_API_KEY" : config.KOFIC_API_KEY
-    }
+}
 
 google_credential={
     "GOOGLE_API_KEY" : config.GOOGLE_API_KEY
