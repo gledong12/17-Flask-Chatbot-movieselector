@@ -23,17 +23,20 @@ class FindCgvTheater(object):
             'considerIp' : True
             }
         requestpost = requests.post(geolocation_url, json=data)
+        print('requestpost', requestpost)
         respons_data = requestpost.json()
         print(respons_data)
         lat = respons_data['location']['lat']
         lng = respons_data['location']['lng']
 
-        Place_url ="https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={},{}&radius=20000&type=movie_theater&keyword=CGV&key={}".format(lat,lng,config.GOOGLE_API_KEY)
+        Place_url ="https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={},{}&radius=100000&type=movie_theater&keyword=CGV&key={}".format(lat,lng,config.GOOGLE_API_KEY)
+        print('Place_url', Place_url)
 
         place_result = requests.post(Place_url)
+
         #place_data = place_result.json()
         #results = place_data['results']
-        print(place_result)
+        print(place_result.json())
         return place_result.json()
     
     def simplify(self, results):

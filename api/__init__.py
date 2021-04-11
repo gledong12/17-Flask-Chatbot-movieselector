@@ -23,7 +23,7 @@ def create_app(database, facebook_credentials,google_credential):
 
     ##Persistence Layer -> model
     user_dao = UserDao(database)
-    message_dao = MessageDao(database)
+    message_dao = MessageDao(database, user_dao)
     theater_dao = TheaterDao(database)
     
     ## Business Layer -> service
