@@ -1,10 +1,9 @@
 # Donplayer
-[![Dongplayer]]("https://www.youtube.com/watch?v=1uyhBPQEWqs")
+[![Dongplayer](https://images.velog.io/images/eagle5424/post/550801dd-4467-4669-8c7c-2c296bd69506/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7,%202021-06-14%2016-21-06.png)](https://www.youtube.com/watch?v=1uyhBPQEWqs)
 
 
-<div align="center">
-  <img src="https://www.youtube.com/watch?v=1uyhBPQEWqs"><br>
-</div>
+## 2021.03.29 ~ 2021.04.06
+Search for nearby movie theaters and send them the title and movie time.
 
 ## Project Structure
 ```
@@ -44,18 +43,21 @@
   <img src="https://images.velog.io/images/eagle5424/post/ce4defff-22cf-4382-980e-29b2d2b56a7e/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7,%202021-04-13%2000-27-26.png"><br>
 </div>
 
-* `START` : User get this statement when chatbot start
+* `START`   : User get this statement when chatbot start
 * `Rank or Theater` : User get next statement when chatbot start.
-* `RANK` : If the current status is 'rank or heater', the user enters '순위' and gets today's box office top 10.
+* `RANK`    : If the current status is 'rank or heater', the user enters '순위' and gets today's box office top 10.
 * `THEATER` : If the current status is 'rank or heater', the user enters '영화관' and navigates the nearby movie theater.
-
-## 2021.03.29 ~ 2021.04.06
-주변의 영화관을 검색하고 해당 영화관의 제목과 영화시간을 보내준다.
+Of course, the 'RANK' phase and 'THEATER' states can go back and forth from one another.
+* `SELECT` : In the 'THEATER' step, select the movie theater you searched for and choose the CGV you want to know.
+* `TIME`   : It is a stage that shows the title and time of the movie theater selected during the 'SELECT' stage.
+* `CGV`    : Steps to link to a web page for reservation
+* `BAD REQUEST` : In that situation, this stage can return to the 'RANK' and 'THEATER' stages as the state you get when you don't get the word you want.
 
 ## chatbot?
 챗봇 혹은 채터봇은 음성이나 문자를 통한 인간과의 대화를 통해서 특별한 작업을 수행하도록 제작된 컴퓨터 프로그램이다.
+In that situation, this stage can return to the 'RANK' and 'THEATER' stages as the state you get when you don't get the word you want.
 
-# STACK
+## STACK
 PYTHON / FLASK / MYSQL / GIT / GITHUB / FACEBOOK_Messenger_API / Geolocation_API / Place_API / SLACK / Beautifulsoup
 ---
 # 구현목록
