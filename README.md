@@ -55,7 +55,7 @@ Of course, the 'RANK' phase and 'THEATER' states can go back and forth from one 
 
 ## chatbot?
 챗봇 혹은 채터봇은 음성이나 문자를 통한 인간과의 대화를 통해서 특별한 작업을 수행하도록 제작된 컴퓨터 프로그램이다.
-In that situation, this stage can return to the 'RANK' and 'THEATER' stages as the state you get when you don't get the word you want.
+
 
 ## STACK
 PYTHON / FLASK / MYSQL / GIT / GITHUB / FACEBOOK_Messenger_API / Geolocation_API / Place_API / SLACK / Beautifulsoup
